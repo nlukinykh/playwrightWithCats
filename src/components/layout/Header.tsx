@@ -48,6 +48,7 @@ export function Header({ onCartClick }: HeaderProps) {
             <button
               type="button"
               className="auth__link"
+              data-testid="signOutButton"
               onClick={logout}
               style={{ background: 'none', border: 'none', padding: 0 }}>
               Выйти
@@ -56,6 +57,7 @@ export function Header({ onCartClick }: HeaderProps) {
             <button
               type="button"
               className="auth__link"
+              data-testid="signInButton"
               onClick={() => openAuthModal()}
               style={{ background: 'none', border: 'none', padding: 0 }}>
               Войти

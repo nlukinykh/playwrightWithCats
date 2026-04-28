@@ -1,6 +1,7 @@
 ## README для проекта `web-pizza`
 
 ---
+# Test Project from https://stepik.org/course/228133/syllabus
 
 # Web Pizza (Cat Pizza Shop)
 
@@ -161,3 +162,6 @@ npm run lint
   - `src/cart/CartContext.tsx`
 
 ---
+
+git remote add github https://github.com/nlukinykh/playwrightWithCats.git
+git push github main

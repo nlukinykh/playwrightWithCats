@@ -10,6 +10,7 @@ test('Check header', async ({ page }) => {
  test('Check card list items', async ({ page }) => {
   await page.goto('');
   const fisrtCard = page.getByTestId('catCard_0');
-  const cardListItems = page.getByTestId(/catCard/)
+  const cardListItems = page.getByTestId(/catCard/);
   await expect(fisrtCard).toBeVisible();
+  expect(await cardListItems.count()).toBeGreaterThan(0);
  });
