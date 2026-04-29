@@ -30,10 +30,12 @@ export function Header({ onCartClick }: HeaderProps) {
           </NavLink>
           <NavLink
             to="/orders"
+            data-testId="openOrderButton"
             className={({ isActive }) => (isActive ? 'nav__link nav__link--active' : 'nav__link')}>
             Мои заказы
           </NavLink>
           <button
+            data-testId="openCartButton"
             type="button"
             className={
               itemsCount > 0 ? 'nav__cart-button nav__cart-button--active' : 'nav__cart-button'
