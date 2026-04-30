@@ -13,25 +13,25 @@ test.describe.serial("Orders", () => {
     await cleanupApi.deleteOrdersByEmail(testUsers.existing.email);
   });
 
-  test("Make order with login in checkout", async ({ homePage, orderPage, checkoutPage }) => {
+  test("Make order with login in checkout", async ({ homePage, ordersPage, checkoutPage }) => {
     await homePage.open();
     await homePage.addFirstCatToCart();
     await homePage.goToCheckoutFromCart();
     await checkoutPage.signInInCheckout(testUsers.existing.email, testUsers.existing.password);
     await checkoutPage.fillAddress(testAddress);
     await checkoutPage.submit();
-    await orderPage.open();
-    await orderPage.assertHasOrder();
+    await ordersPage.open();
+    await ordersPage.assertHasOrder();
   });
 
-  test("Make order after login", async ({ homePage, orderPage, checkoutPage, authPage }) => {
+  test("Make order after login", async ({ homePage, ordersPage, checkoutPage, authPage }) => {
     await homePage.open();
     await authPage.signIn(testUsers.existing.email, testUsers.existing.password);
     await homePage.addFirstCatToCart();
     await homePage.goToCheckoutFromCart();
     await checkoutPage.fillAddress(testAddress);
     await checkoutPage.submit();
-    await orderPage.open();
-    await orderPage.assertHasOrder();
+    await ordersPage.open();
+    await ordersPage.assertHasOrder();
   });
 });

@@ -9,7 +9,7 @@ type MyFixtures = {
     homePage: HomePage;
     authPage: AuthModal;
     checkoutPage: CheckoutPage;
-    orderPage: OrdersPage;
+    ordersPage: OrdersPage;
 }
 
 export const test = base.extend<MyFixtures>({
@@ -28,7 +28,7 @@ export const test = base.extend<MyFixtures>({
         await use(checkoutPage);
     },
 
-    orderPage: async ({page}, use) => {
+    ordersPage: async ({page}, use) => {
         const orderPage = new OrdersPage(page);
         await use(orderPage);
     }
