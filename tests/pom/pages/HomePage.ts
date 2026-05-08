@@ -1,4 +1,6 @@
 import { expect, type Page } from "playwright/test";
+import { CatsApi } from "../api/mockApi/CatsApi";
+import { CartApi } from "../api/mockApi/CartApi";
 
 export class HomePage {
   constructor(private page: Page) {
@@ -8,12 +10,43 @@ export class HomePage {
   async open() {
     await this.page.goto("/");
   }
+
+  async setupApiEmptyCart() {
+    const catApi = new CatsApi(this.page);
+    const cartApi = new CartApi(this.page);
+
+    await cartApi.setEmptyCart();
+    await catApi.setCatsItems();
+  }
+
+  async setupApiCartWithItem() {
+    const catApi = new CatsApi(this.page);
+    const cartApi = new CartApi(this.page);
+
+    await cartApi.setCartWithOneItem();
+    await catApi.setCatsItems();
+  }
+
+  private getModalLocator() {
+    return this.page.getByTestId("modal");
+  }
+
   async addFirstCatToCart() {
+    await this.openItemDetailModal();
+
+    await this.page.getByTestId("catModalAddToCartButton").click();
+    await this.page
+      .getByTestId("catModalAddToCartButton")
+      .waitFor({ state: "detached" });
+
+    //await expect(this.page.getByTestId("openCartButton")).toContainText(/\(\d+\)/);
+  }
+
+  async openItemDetailModal() {
     await this.page
       .getByTestId("catCard_0")
       .getByTestId("addToCardButton")
       .click();
-    await this.page.getByTestId("catModalAddToCartButton").click();
   }
 
   async openCart() {
@@ -26,7 +59,7 @@ export class HomePage {
 
   async goToCheckoutFromCart() {
     await this.openCart();
-    await this.goToCheckoutFromCart();
+    await this.goToCartPage();
     await this.page.getByTestId("makeOrderButton").click();
   }
 
@@ -42,11 +75,37 @@ export class HomePage {
   }
 
   async assertCartBadgeCount(count: number) {
-    await expect(this.page.getByTestId('openCartButton')).toContainText(`(${count})`);
+    await expect(this.page.getByTestId("openCartButton")).toContainText(
+      `(${count})`,
+    );
   }
 
   async assertCartPageOpened() {
     await expect(this.page).toHaveURL(/\/cart$/);
-    await expect(this.page.getByRole('heading', {name: 'Корзина'})).toBeVisible();
+    await expect(
+      this.page.getByRole("heading", { name: "Корзина" }),
+    ).toBeVisible();
+  }
+
+  async assertCorrectPageViewWithItems() {
+    await expect(this.page).toHaveScreenshot("homePageWithItems.png");
+  }
+
+  async assertCorrectPageViewWithOpenDetailModal() {
+    await expect(this.getModalLocator()).toHaveScreenshot(
+      "detailItemModal.png",
+    );
+  }
+
+  async assertCorrectPageViewWithOpenCartEmptyDrawer() {
+    await expect(this.getModalLocator()).toHaveScreenshot(
+      "cartEmptyDrawer.png",
+    );
+  }
+
+  async assertCorrectPageViewWithOpenCartDrawerWithOneItem() {
+    await expect(this.getModalLocator()).toHaveScreenshot(
+      "cartDrawerWithOneItem.png",
+    );
   }
 }

@@ -1,4 +1,4 @@
-import {authorizedTest as test } from "../../fixtures/app.fixture";
+import { guestTest as test } from "../../fixtures/app.fixture";
 import { CleanupApi } from "../api/CleanupApi";
 import { testAddress, testUsers } from "../data/testData";
 
@@ -13,10 +13,18 @@ test.describe.serial("Orders", () => {
     await cleanupApi.deleteOrdersByEmail(testUsers.existing.email);
   });
 
-  test("Authorized user makes order without manual login", async ({ homePage, ordersPage, checkoutPage }) => {
+  test("Make order with login in checkout", async ({
+    homePage,
+    ordersPage,
+    checkoutPage,
+  }) => {
     await homePage.open();
     await homePage.addFirstCatToCart();
     await homePage.goToCheckoutFromCart();
+    await checkoutPage.signInInCheckout(
+      testUsers.existing.email,
+      testUsers.existing.password,
+    );
     await checkoutPage.fillAddress(testAddress);
     await checkoutPage.submit();
     await ordersPage.open();

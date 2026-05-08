@@ -1,4 +1,4 @@
-import { type Page, expect } from "@playwright/test";
+import {  expect, type Page } from "@playwright/test";
 
 export class CheckoutPage {
   constructor(private page: Page) {
@@ -29,5 +29,17 @@ export class CheckoutPage {
     await this.page.getByTestId("approveOrder").click();
     await expect(this.page.getByTestId('modalTitle')).toHaveText("Оформление доставки");
     await this.page.getByTestId('closeSubmittedModalButton').click();
+  }
+
+  async submitWithoutAdress() {
+    await this.page.getByTestId('approveOrder').click();
+  }
+
+  async assertCheckoutOpened() {
+    await expect(this.page.getByTestId('modalTitle')).toHaveText('Оформление доставки');
+  }
+
+  async assertValidationError(message: string) {
+    await expect(this.page.getByText(message)).toBeVisible();
   }
 }
